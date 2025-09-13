@@ -47,24 +47,47 @@ closeBtn.MouseButton1Click:Connect(function()
     screenGui.Enabled = false
 end)
 
--- Nút Hide/Show GUI
+----------------------------------------------------------------
+-- 🟥 Nút R để ẩn/hiện GUI
+----------------------------------------------------------------
+local TweenService = game:GetService("TweenService")
+
 local toggleBtn = Instance.new("TextButton", screenGui)
-toggleBtn.Size = UDim2.new(0, 50, 0, 30)
-toggleBtn.Position = UDim2.new(0, 5, 0, 5)
-toggleBtn.Text = "Hide"
-toggleBtn.TextColor3 = Color3.new(1, 0, 0)
+toggleBtn.Size = UDim2.new(0, 35, 0, 35)
+toggleBtn.Position = UDim2.new(0, 10, 0.5, -20) -- bên trái giữa màn hình
+toggleBtn.Text = "R"
+toggleBtn.TextColor3 = Color3.new(1, 1, 1)
 toggleBtn.Font = Enum.Font.GothamBold
-toggleBtn.TextSize = 18
-toggleBtn.BackgroundColor3 = Color3.new(0.16, 0, 0)
+toggleBtn.TextSize = 20
+toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(1, 0)
 
 local guiVisible = true
+
+-- Hiệu ứng hover (màu sáng + to nhẹ)
+toggleBtn.MouseEnter:Connect(function()
+    TweenService:Create(toggleBtn, TweenInfo.new(0.2), {
+        BackgroundColor3 = Color3.fromRGB(255, 50, 50),
+        Size = UDim2.new(0, 40, 0, 40)
+    }):Play()
+end)
+
+toggleBtn.MouseLeave:Connect(function()
+    TweenService:Create(toggleBtn, TweenInfo.new(0.2), {
+        BackgroundColor3 = Color3.fromRGB(200, 0, 0),
+        Size = UDim2.new(0, 35, 0, 35)
+    }):Play()
+end)
+
+-- Click để ẩn/hiện GUI
 toggleBtn.MouseButton1Click:Connect(function()
     guiVisible = not guiVisible
     outer.Visible = guiVisible
-    toggleBtn.Text = guiVisible and "Hide" or "Show"
 end)
 
+----------------------------------------------------------------
 -- Sidebar menu
+----------------------------------------------------------------
 local menu = Instance.new("Frame", main)
 menu.Size = UDim2.new(0, 100, 1, -30)
 menu.Position = UDim2.new(0, 0, 0, 30)
@@ -106,27 +129,39 @@ tabTitle.TextSize = 24
 tabTitle.TextXAlignment = Enum.TextXAlignment.Left
 
 ----------------------------------------------------------------
--- 🟢 Loading GUI (170 giây)
+-- 🟢 Loading GUI (170 giây, thêm lý do chờ)
 ----------------------------------------------------------------
 local loadingFrame = Instance.new("Frame", screenGui)
-loadingFrame.Size = UDim2.new(0, 300, 0, 80)
-loadingFrame.Position = UDim2.new(0.5, -150, 0.5, -40)
+loadingFrame.Size = UDim2.new(0, 350, 0, 120)
+loadingFrame.Position = UDim2.new(0.5, -175, 0.5, -60)
 loadingFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 loadingFrame.Visible = false
 Instance.new("UICorner", loadingFrame).CornerRadius = UDim.new(0, 10)
 
+-- Lý do chờ (câu thay đổi)
+local reasonText = Instance.new("TextLabel", loadingFrame)
+reasonText.Size = UDim2.new(1, -20, 0, 30)
+reasonText.Position = UDim2.new(0, 10, 0, 5)
+reasonText.BackgroundTransparency = 1
+reasonText.Text = "Why you need to wait"
+reasonText.TextColor3 = Color3.new(1, 1, 1)
+reasonText.Font = Enum.Font.GothamBold
+reasonText.TextScaled = true
+
+-- Loading % text
 local loadingText = Instance.new("TextLabel", loadingFrame)
-loadingText.Size = UDim2.new(1, 0, 0.3, 0)
-loadingText.Position = UDim2.new(0, 0, 0, 5)
+loadingText.Size = UDim2.new(1, 0, 0.2, 0)
+loadingText.Position = UDim2.new(0, 0, 0.35, 0)
 loadingText.BackgroundTransparency = 1
 loadingText.Text = "Loading 0%"
 loadingText.TextColor3 = Color3.new(1, 1, 1)
 loadingText.Font = Enum.Font.GothamBold
 loadingText.TextScaled = true
 
+-- Progress bar
 local progressBack = Instance.new("Frame", loadingFrame)
-progressBack.Size = UDim2.new(0.9, 0, 0.3, 0)
-progressBack.Position = UDim2.new(0.05, 0, 0.55, 0)
+progressBack.Size = UDim2.new(0.9, 0, 0.2, 0)
+progressBack.Position = UDim2.new(0.05, 0, 0.7, 0)
 progressBack.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 Instance.new("UICorner", progressBack).CornerRadius = UDim.new(0, 6)
 
@@ -135,10 +170,40 @@ progressBar.Size = UDim2.new(0, 0, 1, 0)
 progressBar.BackgroundColor3 = Color3.fromRGB(255, 170, 0)
 Instance.new("UICorner", progressBar).CornerRadius = UDim.new(0, 6)
 
+-- Các câu hiển thị luân phiên
+local messages = {
+    "Fetching Blade Ball configs...",
+    "Calibrating parry system...",
+    "Optimizing reaction speed...",
+    "Loading skill modules...",
+    "Almost ready to play!"
+}
+
+local function cycleMessages()
+    task.spawn(function()
+        task.wait(3)
+        local index = 1
+        while loadingFrame.Visible do
+            local msg = messages[index]
+            TweenService:Create(reasonText, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
+            task.wait(0.5)
+            reasonText.Text = msg
+            TweenService:Create(reasonText, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+            task.wait(3.5)
+            index = index + 1
+            if index > #messages then index = 1 end
+        end
+    end)
+end
+
 local function startLoading(callback)
     loadingFrame.Visible = true
     progressBar.Size = UDim2.new(0, 0, 1, 0)
     loadingText.Text = "Loading 0%"
+    reasonText.Text = "Why you need to wait"
+    reasonText.TextTransparency = 0
+
+    cycleMessages()
 
     local duration = 170
     local steps = 100
@@ -205,7 +270,7 @@ local function createToggle(text, y)
     end)
 end
 
--- Hàm tạo label kèm TextBox để nhập giá trị
+-- Hàm tạo input
 local function createInput(text, y)
     local frame = Instance.new("Frame", content)
     frame.Size = UDim2.new(1, -20, 0, 40)
