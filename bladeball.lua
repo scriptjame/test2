@@ -3,7 +3,12 @@
 local keyURL = "https://scriptjame.github.io/key.lua/"
 local getKeyLink = "https://loot-link.com/s?On71Kevv"
 
-local correctKey = game:HttpGet(keyURL):gsub("%s+","")
+local keys = loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptjame/key.lua/main/keys.lua"))()
+
+local day = tonumber(os.date("%d"))
+local index = ((day - 1) % #keys) + 1
+
+local correctKey = keys[index]
 
 local gui = Instance.new("ScreenGui")
 gui.Parent = game.CoreGui
