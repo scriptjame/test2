@@ -135,6 +135,8 @@ verify.MouseButton1Click:Connect(function()
 
 	if entered == correctKey then
 
+		_G.SHIBA_KEY_VERIFIED = true
+
 		frame:Destroy()
 
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptjame/test2/main/main.lua"))()
