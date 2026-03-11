@@ -134,7 +134,7 @@ verify.MouseButton1Click:Connect(function()
 
 		frame:Destroy()
 
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptjame/test2/main/main.lua"))()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptjame/test2/main/bladeball.lua"))()
 
 	else
 
