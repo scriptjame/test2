@@ -3,8 +3,7 @@
 local keyURL = "https://scriptjame.github.io/key.lua/"
 local getKeyLink = "https://loot-link.com/s?On71Kevv"
 
-local correctKey = game:HttpGet(keyURL)
-correctKey = correctKey:gsub("%s+","")
+local correctKey = "0ss92kdIsk33"
 
 local gui = Instance.new("ScreenGui")
 gui.Parent = game.CoreGui
