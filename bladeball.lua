@@ -1,7 +1,7 @@
 -- SHIBA KEY SYSTEM
 
 local keyURL = "https://scriptjame.github.io/key.lua/"
-local getKeyLink = "PUT_YOUR_LOOTLAB_LINK_HERE"
+local getKeyLink = "https://loot-link.com/s?On71Kevv"
 
 local correctKey = game:HttpGet(keyURL):gsub("%s+","")
 
