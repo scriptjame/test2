@@ -2,22 +2,26 @@
 
 local verified = false
 
-local getKeyLink = "https://loot-link.com/s?T2y5GVio"
+local getKeyLink = "https://lootdest.org/s?zY7I2x6A"
 local keyPage = "https://scriptjame.github.io/key/"
 
 -- GET KEY FROM WEBSITE
 local function getKey()
 
-    local success,response = pcall(function()
-        return game:HttpGet(keyPage)
-    end)
+```
+local success,response = pcall(function()
+    return game:HttpGet(keyPage)
+end)
 
-    if success then
-        local key = response:match("%w+")
-        return key
-    end
+if success then
+    -- Lấy key nằm giữa dấu > <
+    local key = response:match(">([%w%d]+)<")
+    return key
+end
 
-    return nil
+return nil
+```
+
 end
 
 -- GUI
@@ -63,15 +67,17 @@ Instance.new("UICorner",get)
 
 get.MouseButton1Click:Connect(function()
 
-    if setclipboard then
-        setclipboard(getKeyLink)
-    end
+```
+if setclipboard then
+    setclipboard(getKeyLink)
+end
 
-    game.StarterGui:SetCore("SendNotification",{
-        Title="Shiba",
-        Text="LootLabs link copied",
-        Duration=4
-    })
+game.StarterGui:SetCore("SendNotification",{
+    Title="Shiba",
+    Text="LootLabs link copied",
+    Duration=4
+})
+```
 
 end)
 
@@ -87,29 +93,31 @@ Instance.new("UICorner",verify)
 
 verify.MouseButton1Click:Connect(function()
 
-    local entered = box.Text
-    local correctKey = getKey()
+```
+local entered = box.Text
+local correctKey = getKey()
 
-    if entered == correctKey then
+if entered == correctKey then
 
-        verified = true
-        gui:Destroy()
+    verified = true
+    gui:Destroy()
 
-        game.StarterGui:SetCore("SendNotification",{
-            Title="Shiba",
-            Text="Key Verified!",
-            Duration=4
-        })
+    game.StarterGui:SetCore("SendNotification",{
+        Title="Shiba",
+        Text="Key Verified!",
+        Duration=4
+    })
 
-    else
+else
 
-        game.StarterGui:SetCore("SendNotification",{
-            Title="Shiba",
-            Text="Invalid key",
-            Duration=4
-        })
+    game.StarterGui:SetCore("SendNotification",{
+        Title="Shiba",
+        Text="Invalid key",
+        Duration=4
+    })
 
-    end
+end
+```
 
 end)
 
