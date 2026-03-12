@@ -1,6 +1,6 @@
 -- SHIBA KEY SYSTEM
 
-local getKeyLink = "https://loot-link.com/s?T2y5GVio"
+local getKeyLink = "https://lootdest.org/s?zY7I2x6A"
 local keyPage = "https://scriptjame.github.io/key/"
 
 -- GET KEY FROM WEBSITE
