@@ -6,6 +6,18 @@ local keyURL = "https://raw.githubusercontent.com/scriptjame/key/main/key.txt"
 local correctKey = game:HttpGet(keyURL)
 correctKey = correctKey:gsub("%s+","")
 
+local keyFile = "ShibaKey.txt"
+
+-- kiểm tra key đã lưu
+if isfile and isfile(keyFile) then
+	local savedKey = readfile(keyFile)
+
+	if savedKey == correctKey then
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptjame/test2/refs/heads/main/loot.lua"))()
+		return
+	end
+end
+
 local TweenService = game:GetService("TweenService")
 
 local clickSound = Instance.new("Sound")
@@ -145,6 +157,10 @@ verify.MouseButton1Click:Connect(function()
 	local entered = box.Text
 
 	if entered == correctKey then
+
+		if writefile then
+			writefile(keyFile, correctKey)
+		end
 
 		gui:Destroy()
 
