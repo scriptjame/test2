@@ -75,7 +75,7 @@ info.Parent = frame
 info.Position = UDim2.new(0,0,0.18,0)
 info.Size = UDim2.new(1,0,0,25)
 info.BackgroundTransparency = 1
-info.Text = "Enter your key to begin."
+info.Text = "Free script is limited – Get key for full hub."
 info.TextColor3 = Color3.fromRGB(180,180,180)
 info.Font = Enum.Font.Gotham
 info.TextSize = 14
@@ -116,8 +116,8 @@ end)
 -- LINKVERTISE BUTTON
 local linkv = Instance.new("TextButton")
 linkv.Parent = frame
-linkv.Size = UDim2.new(0.35,0,0,35)
-linkv.Position = UDim2.new(0.1,0,0.55,0)
+linkv.Size = UDim2.new(0.28,0,0,35)
+linkv.Position = UDim2.new(0.05,0,0.55,0)
 linkv.Text = "       Linkvertise"
 linkv.BackgroundColor3 = Color3.fromRGB(40,40,45)
 linkv.TextColor3 = Color3.new(1,1,1)
@@ -151,11 +151,42 @@ linkv.MouseButton1Click:Connect(function()
 
 end)
 
+-- FREE BUTTON (FIXED)
+local free = Instance.new("TextButton")
+free.Parent = frame
+free.Size = UDim2.new(0.28,0,0,35)
+free.Position = UDim2.new(0.36,0,0.55,0)
+free.Text = "Free"
+free.Font = Enum.Font.GothamBold
+free.TextSize = 14
+free.TextColor3 = Color3.new(1,1,1)
+free.BackgroundColor3 = Color3.fromRGB(60,200,120)
+
+Instance.new("UICorner",free)
+
+free.MouseButton1Click:Connect(function()
+
+	clickSound:Play()
+
+	game.StarterGui:SetCore("SendNotification",{
+		Title = "Shiba",
+		Text = "Running free script...",
+		Duration = 4
+	})
+
+	gui:Destroy()
+
+	task.wait(0.3)
+
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua", true))()
+		
+end)
+
 -- LOOTLABS BUTTON
 local loot = Instance.new("TextButton")
 loot.Parent = frame
-loot.Size = UDim2.new(0.35,0,0,35)
-loot.Position = UDim2.new(0.55,0,0.55,0)
+loot.Size = UDim2.new(0.28,0,0,35)
+loot.Position = UDim2.new(0.67,0,0.55,0)
 loot.Text = "       LootLabs"
 loot.BackgroundColor3 = Color3.fromRGB(40,40,45)
 loot.TextColor3 = Color3.new(1,1,1)
