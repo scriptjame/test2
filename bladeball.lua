@@ -1,21 +1,36 @@
 -- SHIBA GET KEY GUI
 
-local linkvertiseLink = "https://link-center.net/4248703/7sIsVJuQAVLG"
-local lootlabsLink = "https://lootdest.org/s?zY7I2x6A"
+local linkvertiseLink = "https://link-target.net/4248703/NMAFeKXYONqb"
+local lootlabsLink = "https://loot-link.com/s?i55LYZnQ"
 
-local keyURL = "https://raw.githubusercontent.com/scriptjame/key/main/key.txt"
-
-local correctKey = game:HttpGet(keyURL)
-correctKey = correctKey:gsub("%s+","")
+-- 🔥 VERIFY URL
+local verifyURL = "https://keysystem-6299.onrender.com/verify?key="
 
 local keyFile = "ShibaKey.txt"
 
+-- ✅ HWID (ĐÃ NÂNG CẤP)
+local hwid = game:GetService("RbxAnalyticsService"):GetClientId() .. game.Players.LocalPlayer.UserId
+
+-- 🔥 AUTO LOGIN (FIX KHÔNG XOÁ KEY NGAY + ANTI FAIL)
 if isfile and isfile(keyFile) then
 	local savedKey = readfile(keyFile)
 
-	if savedKey == correctKey then
+	local success = false
+
+	pcall(function()
+		local response = game:HttpGet(verifyURL .. savedKey .. "&hwid=" .. hwid)
+
+		if response and response:find("true") then
+			success = true
+		end
+	end)
+
+	if success then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptjame/test2/refs/heads/main/loot.lua"))()
 		return
+	else
+		-- ❗ KHÔNG xoá key nữa → tránh hiện GUI lại
+		warn("Verify failed, retry later")
 	end
 end
 
@@ -207,10 +222,12 @@ verify.MouseButton1Click:Connect(function()
 
 	local entered = box.Text
 
-	if entered == correctKey then
+	local response = game:HttpGet(verifyURL .. entered .. "&hwid=" .. hwid)
+
+	if response:find("true") then
 
 		if writefile then
-			writefile(keyFile, correctKey)
+			writefile(keyFile, entered)
 		end
 
 		gui:Destroy()
@@ -221,7 +238,7 @@ verify.MouseButton1Click:Connect(function()
 
 		game.StarterGui:SetCore("SendNotification",{
 			Title = "Shiba",
-			Text = "Invalid Key",
+			Text = "Invalid or Expired Key",
 			Duration = 4
 		})
 
